@@ -19,10 +19,6 @@ jobs:
         run: dotnet publish GamingWebsite/GamingWebsite.csproj -c Release -o dist/GamingWebsite --nologo
 
 
-      - name: Rewrite base href
-        run: sed -i 's/<base href="\/" \/>/<base href="\/Hobby\/" \/>/g' dist/wwwroot/index.html
-
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
