@@ -1,9 +1,7 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -18,10 +16,13 @@ jobs:
           dotnet-version: '8.0'
 
       - name: Publish
-        run: dotnet publish GamingWebsite/GamingWebsite.csproj -c Release -o dist/GamingWebsite --nologo
+        run: dotnet publish GamingWebsite/GamingWebsite.csproj -c Release -o dist --nologo
+
+      - name: Rewrite base href
+        run: sed -i 's/<base href="\/" \/>/<base href="\/Hobby\/" \/>/g' dist/wwwroot/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist/GamingWebsite/wwwroot
+          publish_dir: dist/wwwroot
